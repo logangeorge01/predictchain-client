@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { App } from './App';
 import { EventsComponent } from './components/events/Events';
 import { NewEventComponent } from "./components/events/NewEvent";
+import { Portfolio } from "./components/Portfolio/Portfolio";
 
 render(
    <BrowserRouter>
@@ -12,6 +13,7 @@ render(
          <Route path="/" element={<App />}>
             <Route path="events" element={<EventsComponent />} />
             <Route path="newevent" element={<NewEventComponent />} />
+            <Route path="portfolio" element={<Portfolio />} />
             {/* <Route path="newmarket" element={<NewMarketComponent />} /> */}
             
          </Route>
