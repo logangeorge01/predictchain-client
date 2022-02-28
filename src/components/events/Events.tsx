@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllEvents } from "../../solana/functions";
+// import { getAllEvents } from "../../solana/functions";
 import { SolEvent } from "../../solana/models";
 
 
-export function EventsComponent() {
+export function Events() {
    const [events, setEvents] = useState<SolEvent[]>([]);
    let navigate = useNavigate();
 
    useEffect(() => {
-      getAllEvents().then((events: SolEvent[]) => {
-         // console.log(events);
-         setEvents(events);
-      });
+      // getAllEvents().then((events: SolEvent[]) => {
+      //    // console.log(events);
+      //    setEvents(events);
+      // });
    }, []);
 
    return (

@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createEvent } from "../../solana/functions";
+// import { createEvent } from "../../solana/functions";
 import { SolEvent } from '../../solana/models';
+import './NewEvent.css';
 
-export function NewEventComponent() {
+export function NewEvent() {
    const [description, setDescription] = useState('');
-   const [league, setLeague] = useState('');
-   const [starttimedate, setStarttimeDate] = useState('');
-   const [starttimetime, setStarttimeTime] = useState('');
-   const [image0, setImage0] = useState('');
-   const [image1, setImage1] = useState('');
-   const [side0, setSide0] = useState('');
-   const [side1, setSide1] = useState('');
+   const [category, setCategory] = useState('');
+   const [resolveDate, setResolveDate] = useState('');
+   const [image, setImage] = useState('');
 
    let navigate = useNavigate();
 
@@ -20,12 +17,9 @@ export function NewEventComponent() {
 
       const newevent = new SolEvent({
          description,
-         starttime: new Date(`${starttimedate} ${starttimetime}`).getTime(),
-         league,
-         image0: image0,
-         image1: image1,
-         side0,
-         side1
+         resolvedate: new Date(resolveDate).getTime(),
+         category,
+         image
       });
 
       // submit event to server function
@@ -33,26 +27,28 @@ export function NewEventComponent() {
       navigate('/events');
    };
 
+   function onCancel() {
+      navigate('/');
+   }
+
    return (
-      <div>
+      <div className='newevent'>
+         <br />
+         <div>Request a New Event</div><br />
+
          <div><input type="text" placeholder="description" onChange={(e) => setDescription(e.target.value)} /></div><br />
-         <div><input type="text" placeholder="league" onChange={(e) => setLeague(e.target.value)} /></div><br />
+         <div><input type="text" placeholder="category" onChange={(e) => setCategory(e.target.value)} /></div><br />
+
+         <div><input type="date" onChange={(e) => setResolveDate(e.target.value)} /></div><br />
+
          <div>
-            <input type="date" onChange={(e) => setStarttimeDate(e.target.value)} />
-            <input type="time" onChange={(e) => setStarttimeTime(e.target.value)} />
-         </div><br />
-         {/* <div>optional</div> */}
-         <div>
-            <input type="text" placeholder="image0" onChange={(e) => setImage0(e.target.value)} />
-            <input type="text" placeholder="image1" onChange={(e) => setImage1(e.target.value)} />
+            <input type="text" placeholder="image" onChange={(e) => setImage(e.target.value)} />
          </div><br />
 
          <div>
-            <input type="text" placeholder="side0" onChange={(e) => setSide0(e.target.value)} />
-            <input type="text" placeholder="side1" onChange={(e) => setSide1(e.target.value)} />
-         </div><br />
-
-         <button onClick={onSubmit}>Create Event</button>
+            <button className='formbutton' onClick={onCancel}>Cancel</button>
+            <button className='formbutton' onClick={onSubmit}>Create Event</button>
+         </div>
       </div>
    );
 }

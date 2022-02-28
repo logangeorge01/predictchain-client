@@ -1,0 +1,10 @@
+
+.newevent {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.formbutton {
+   margin: 0 10px;
+}
