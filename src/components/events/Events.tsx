@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { getAllEvents } from "../../solana/functions";
 import { Event } from "../../solana/models";
+import { Button } from '@mui/material';
 
 
 export function Events() {
@@ -17,7 +18,7 @@ export function Events() {
 
    return (
       <div>
-         <button onClick={() => navigate('/newevent')}>Create Event</button>
+         <Button variant="contained" onClick={() => navigate('/newevent')}>Create Event</Button>
 
          {events.map(event => (
             // <EventComponent
@@ -26,14 +27,14 @@ export function Events() {
             //    setEvents={setEvents} />
 
             <div key={event.eventid!.toString()} style={{border: '1px solid black', padding: '15px', marginBottom: '10px'}}>
-               <div style={{marginBottom: '10px'}}>
+               {/* <div style={{marginBottom: '10px'}}>
                   <img alt='' height='40px' src={event.image0}></img>
                   <img alt='' height='40px' style={{marginLeft: '10px'}} src={event.image1 ?? ''}></img>
                </div>
                
                <div style={{fontWeight: 'bold', fontSize: '25px'}}>{event.description}</div><br />
                <div>{event.league}</div><br />
-               <div>{new Date(event.starttime).toLocaleString()}</div><br />
+               <div>{new Date(event.starttime).toLocaleString()}</div><br /> */}
             </div>
          ))}
       </div>
