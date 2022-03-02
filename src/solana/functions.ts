@@ -9,9 +9,9 @@ import {
    TransactionInstruction,
    Connection
 } from '@solana/web3.js';
-import { SolEvent } from './models';
+import { Event } from './models';
 import BN from 'bn.js';
-import { PROGRAMID } from '../PROGRAMID';
+// import { PROGRAMID } from '../PROGRAMID';
 
 // const cluster = 'https://api.devnet.solana.com';
 // const cluster = 'http://localhost:8899';
@@ -22,14 +22,14 @@ import { PROGRAMID } from '../PROGRAMID';
 // const { connection } = useConnection();
 // const wallet = useWallet();
 
-// export async function getAllEvents(): Promise<SolEvent[]> {
+// export async function getAllEvents(): Promise<Event[]> {
 //    const { connection, wallet } = await checkWallet();
 
 //    let accounts = await connection.getProgramAccounts(PROGRAMID);
-//    let events: SolEvent[] = [];
+//    let events: Event[] = [];
 //    accounts.forEach(pda => {
 //       try {
-//          let eventdata: SolEvent = deserialize(SolEvent.schema, SolEvent, pda.account.data);
+//          let eventdata: Event = deserialize(Event.schema, Event, pda.account.data);
 //          events.push({
 //             admin: eventdata.admin,
 //             eventid: pda.pubkey,
@@ -40,17 +40,17 @@ import { PROGRAMID } from '../PROGRAMID';
 //             image1: eventdata.image1,
 //             side0: eventdata.side0,
 //             side1: eventdata.side1
-//          } as SolEvent);
+//          } as Event);
 //       } catch (err) {
 //          // console.log(err);
 //       }
 //    });
-//    return events.sort((a: SolEvent, b: SolEvent) => a.starttime - b.starttime);
+//    return events.sort((a: Event, b: Event) => a.starttime - b.starttime);
 // }
 
 //100
-// export async function createEvent(event: SolEvent) {
-//    // event = new SolEvent({
+// export async function createEvent(event: Event) {
+//    // event = new Event({
 //    //    description: 'Alabama vs Georgia',
 //    //    starttime: 1641866400000,
 //    //    league: 'College Football',
@@ -69,7 +69,7 @@ import { PROGRAMID } from '../PROGRAMID';
 
 //    event.admin = wallet.publicKey!.toBuffer();
 
-//    let data = serialize(SolEvent.schema, event);
+//    let data = serialize(Event.schema, event);
 //    let ixdata = new Uint8Array([100, ...data]);
 
 //    const lamports = await connection.getMinimumBalanceForRentExemption(data.length);

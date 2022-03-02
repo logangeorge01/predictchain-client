@@ -1,54 +1,87 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { createEvent } from "../../solana/functions";
-import { SolEvent } from '../../solana/models';
+import { Event } from '../../solana/models';
 import './NewEvent.css';
 
 export function NewEvent() {
-   const [description, setDescription] = useState('');
-   const [category, setCategory] = useState('');
-   const [resolveDate, setResolveDate] = useState('');
-   const [image, setImage] = useState('');
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [category, setCategory] = useState('');
+    const [resolution_date, setResolutionDate] = useState('');
+    const [image_link, setImageLink] = useState('');
 
-   let navigate = useNavigate();
+    let navigate = useNavigate();
 
-   async function onSubmit(e: any) {
-      e.preventDefault();
+    async function onSubmit(e: any) {
+        e.preventDefault();
 
-      const newevent = new SolEvent({
-         description,
-         resolvedate: new Date(resolveDate).getTime(),
-         category,
-         image
-      });
+        const newevent = new Event({
+            name,
+            description,
+            resolution_date: new Date(resolution_date).getTime().toString(),
+            category,
+            image_link
+        });
 
-      // submit event to server function
-      // await createEvent(newevent); //real create event smart contract
-      navigate('/events');
-   };
 
-   function onCancel() {
-      navigate('/');
-   }
+        const rawResponse = await fetch(`${process.env.REACT_APP_API_URL}/pending-events`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-api-key': 'TODO FIX THIS',
+            },
+            body: JSON.stringify(newevent)
+        });
+        const content = await rawResponse.json();
 
-   return (
-      <div className='newevent'>
-         <br />
-         <div>Request a New Event</div><br />
+        console.log(content);
 
-         <div><input type="text" placeholder="description" onChange={(e) => setDescription(e.target.value)} /></div><br />
-         <div><input type="text" placeholder="category" onChange={(e) => setCategory(e.target.value)} /></div><br />
+        // if (!response.ok) { /* Handle */ }
 
-         <div><input type="date" onChange={(e) => setResolveDate(e.target.value)} /></div><br />
+        // // If you care about a response:
+        // if (response.body !== null) {
+        //    // body is ReadableStream<Uint8Array>
+        //    // parse as needed, e.g. reading directly, or
+        //    const asString = new TextDecoder("utf-8").decode(response.body);
+        //    // and further:
+        //    const asJSON = JSON.parse(asString);  // implicitly 'any', make sure to verify type on runtime.
+        // }
 
-         <div>
-            <input type="text" placeholder="image" onChange={(e) => setImage(e.target.value)} />
-         </div><br />
 
-         <div>
-            <button className='formbutton' onClick={onCancel}>Cancel</button>
-            <button className='formbutton' onClick={onSubmit}>Create Event</button>
-         </div>
-      </div>
-   );
+        // submit event to server function
+        // await createEvent(newevent); //real create event smart contract
+
+
+
+
+        // navigate('/events');
+    };
+
+    function onCancel() {
+        navigate('/');
+    }
+
+    return (
+        <div className='newevent'>
+            <br />
+            <div>Request a New Event</div><br />
+
+            <div><input type="text" placeholder="name" onChange={(e) => setName(e.target.value)} /></div><br />
+            <div><input type="text" placeholder="description" onChange={(e) => setDescription(e.target.value)} /></div><br />
+            <div><input type="text" placeholder="category" onChange={(e) => setCategory(e.target.value)} /></div><br />
+
+            <div><input type="date" onChange={(e) => setResolutionDate(e.target.value)} /></div><br />
+
+            <div>
+                <input type="text" placeholder="image" onChange={(e) => setImageLink(e.target.value)} />
+            </div><br />
+
+            <div>
+                <button className='formbutton' onClick={onCancel}>Cancel</button>
+                <button className='formbutton' onClick={onSubmit}>Create Event</button>
+            </div>
+        </div>
+    );
 }

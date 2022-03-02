@@ -8,17 +8,17 @@ import { NewEvent } from './components/events/NewEvent';
 import { Portfolio } from './components/portfolio/Portfolio';
 
 ReactDOM.render(
-   <StrictMode>
-      <BrowserRouter>
-         <Routes>
-            <Route path="/" element={<App />}>
-               <Route path="events" element={<Events />} />
-               <Route path="portfolio" element={<Portfolio />} />
-               <Route path="admin" element={<Admin />} />
-            </Route>
-            <Route path="newevent" element={<NewEvent />} />
-         </Routes>
-      </BrowserRouter>
-   </StrictMode>,
-   document.getElementById('app')
+    <StrictMode>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<App />}>
+                    <Route path="events" element={<Events />} />
+                    <Route path="portfolio" element={<Portfolio />} />
+                    <Route path="admin" element={<Admin />} />
+                    <Route path="newevent" element={<NewEvent />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    </StrictMode>,
+    document.getElementById('app')
 );
