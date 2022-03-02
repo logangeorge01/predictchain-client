@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { getAllEvents } from "../../solana/functions";
 import { SolEvent } from "../../solana/models";
+import { Button } from '@mui/material';
 
 
 export function Events() {
@@ -17,7 +18,7 @@ export function Events() {
 
    return (
       <div>
-         <button onClick={() => navigate('/newevent')}>Create Event</button>
+         <Button variant="contained" onClick={() => navigate('/newevent')}>Create Event</Button>
 
          {events.map(event => (
             // <EventComponent
