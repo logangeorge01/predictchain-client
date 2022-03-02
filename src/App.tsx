@@ -1,79 +1,17 @@
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
-import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import {
-   LedgerWalletAdapter,
-   PhantomWalletAdapter,
-   SlopeWalletAdapter,
-   SolflareWalletAdapter,
-   SolletExtensionWalletAdapter,
-   SolletWalletAdapter,
-   TorusWalletAdapter,
-} from '@solana/wallet-adapter-wallets';
-import { clusterApiUrl } from '@solana/web3.js';
 import React, { FC, ReactNode, useMemo } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import ResponsiveAppBar from './components/navbar/Navbar';
+import { Content, Context } from './components/wallet/Wallet';
 
 export const App: FC = () => {
    return (
       <div id='app'>
-         <div className='header'>PredictChain</div>
-
-         <div className='wallet'>
+         <div className='nav'>
             <Context>
-               <Content />
+               <ResponsiveAppBar />
             </Context>
          </div>
-
-         <div className='nav'>
-            <Link className='link' to="/events">
-               Events
-            </Link>
-            <Link className='link' to="/portfolio">
-               Portfolio
-            </Link>
-            <Link className='link' to="/admin">
-               Admin
-            </Link>
-         </div>
-
          <Outlet />
       </div>
    );
-};
-
-const Context: FC<{ children: ReactNode }> = ({ children }) => {
-   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
-   const network = WalletAdapterNetwork.Devnet;
-
-   // You can also provide a custom RPC endpoint.
-   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-
-   // @solana/wallet-adapter-wallets includes all the adapters but supports tree shaking and lazy loading --
-   // Only the wallets you configure here will be compiled into your application, and only the dependencies
-   // of wallets that your users connect to will be loaded.
-   const wallets = useMemo(
-      () => [
-         new PhantomWalletAdapter(),
-         new SlopeWalletAdapter(),
-         new SolflareWalletAdapter({ network }),
-         new TorusWalletAdapter(),
-         new LedgerWalletAdapter(),
-         new SolletWalletAdapter({ network }),
-         new SolletExtensionWalletAdapter({ network }),
-      ],
-      [network]
-   );
-
-   return (
-      <ConnectionProvider endpoint={endpoint}>
-         <WalletProvider wallets={wallets} autoConnect>
-            <WalletModalProvider>{children}</WalletModalProvider>
-         </WalletProvider>
-      </ConnectionProvider>
-   );
-};
-
-const Content: FC = () => {
-   return <WalletMultiButton />;
 };
