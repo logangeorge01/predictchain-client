@@ -65,6 +65,9 @@ export function GetEvents() {
 
                         </Typography>
                         <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                           {"category: " + e.category}
+                        </Typography>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
                            {"description: " + e.description}
                         </Typography>
                         <Typography variant="body2">
