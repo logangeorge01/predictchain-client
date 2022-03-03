@@ -60,7 +60,7 @@ export function NewEvent() {
     };
 
     function onCancel() {
-        navigate('/');
+        navigate('/events');
     }
 
     return (
