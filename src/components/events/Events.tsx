@@ -13,7 +13,7 @@ export function Events() {
             if (res.ok) {
                 return res.json()
             }
-        }).then(json => setEvents((json.items as any[]).map(event => {
+        }).then(json => setEvents(((json && json.items ? json.items : []) as any[]).map(event => {
             return {
                 ...event,
                 resolution_date: new Date(parseInt(event.resolution_date)).toLocaleDateString()
