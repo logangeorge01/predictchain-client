@@ -19,7 +19,7 @@ export function NewEvent() {
         const newevent = new Event({
             name,
             description,
-            resolution_date: new Date(resolution_date).getTime().toString(),
+            resolution_date: new Date(resolution_date.replaceAll('-', '/')).getTime().toString(),
             category,
             image_link
         });
@@ -36,7 +36,6 @@ export function NewEvent() {
         });
         const content = await rawResponse.json();
 
-        console.log(content);
 
         // if (!response.ok) { /* Handle */ }
 
@@ -56,7 +55,7 @@ export function NewEvent() {
 
 
 
-        // navigate('/events');
+        navigate('/events');
     };
 
     function onCancel() {

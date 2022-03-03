@@ -4,44 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Event } from "../../solana/models";
 import { Button, Card, CardContent, Typography, Grid } from '@mui/material';
 
-
-export function Eventss() {
-    const [events, setEvents] = useState<Event[]>([]);
-    let navigate = useNavigate();
-
-    useEffect(() => {
-        // getAllEvents().then((events: Event[]) => {
-        //    // console.log(events);
-        //    setEvents(events);
-        // });
-    }, []);
-
-    return (
-        <div>
-            <Button variant="contained" onClick={() => navigate('/newevent')}>Create Event</Button>
-            {/* <GetEvents /> */}
-
-            {events.map(event => (
-                // <EventComponent
-                //    key={event.eventid!.toString()}
-                //    event={event}
-                //    setEvents={setEvents} />
-
-                <div key={event.eventid!.toString()} style={{ border: '1px solid black', padding: '15px', marginBottom: '10px' }}>
-                    {/* <div style={{marginBottom: '10px'}}>
-                  <img alt='' height='40px' src={event.image0}></img>
-                  <img alt='' height='40px' style={{marginLeft: '10px'}} src={event.image1 ?? ''}></img>
-               </div>
-               
-               <div style={{fontWeight: 'bold', fontSize: '25px'}}>{event.description}</div><br />
-               <div>{event.league}</div><br />
-               <div>{new Date(event.starttime).toLocaleString()}</div><br /> */}
-                </div>
-            ))}
-        </div>
-    );
-}
-
 export function Events() {
     const [events, setEvents] = useState<Event[]>([]);
     let navigate = useNavigate();
@@ -60,12 +22,12 @@ export function Events() {
     }, [])
 
     return (
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <Button variant="contained" onClick={() => navigate('/newevent')}>Request New Event</Button>
 
             <Grid container>
                 {events.length > 0 && events.map(e =>
-                    <Grid item lg={6} key={e.name}>
+                    <Grid item lg={4} key={e.name}>
                         <Card variant="outlined" style={{ margin: "40px", padding: "20px" }}>
                             <CardContent>
                                 <Typography variant="h5" component="div">
@@ -91,6 +53,5 @@ export function Events() {
                 )}
             </Grid>
         </div>
-
     );
 }

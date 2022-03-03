@@ -1,5 +1,5 @@
-import React, { FC, ReactNode, useMemo } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import React, { FC, ReactNode, useEffect, useMemo } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import ResponsiveAppBar from './components/navbar/Navbar';
 import { Content, Context } from './components/wallet/Wallet';
 import { Paper, ThemeProvider, createTheme } from '@mui/material';
@@ -10,6 +10,13 @@ export const App: FC = () => {
             mode: 'dark',
         },
     });
+
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        navigate('/events')
+    }, [])
+    
     return (
         <Context>
             <ThemeProvider theme={darkTheme}>

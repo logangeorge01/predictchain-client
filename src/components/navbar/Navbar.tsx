@@ -45,7 +45,7 @@ const ResponsiveAppBar = () => {
                         variant="h5"
                         noWrap
                         component="div"
-                        sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                        sx={{ mr: 4, display: { xs: 'none', md: 'flex' } }}
                     >
                         PredictChain
                     </Typography>
