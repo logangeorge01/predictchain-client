@@ -2,6 +2,7 @@ import { PublicKey } from "@solana/web3.js";
 // import BN from "bn.js";
 
 export class Event {
+    id?: string;
     eventid?: PublicKey;
     admin?: Uint8Array;
     name: string;

@@ -32,7 +32,7 @@ export function NewEvent() {
                 'Content-Type': 'application/json',
                 'x-api-key': 'TODO FIX THIS',
             },
-            body: JSON.stringify({event: newevent})
+            body: JSON.stringify({ event: newevent })
         });
         const content = await rawResponse.json();
 

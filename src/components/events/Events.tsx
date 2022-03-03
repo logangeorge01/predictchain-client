@@ -5,30 +5,30 @@ import { Event } from "../../solana/models";
 import { Button, Card, CardContent, Typography, Grid } from '@mui/material';
 
 
-export function Events() {
-   const [events, setEvents] = useState<Event[]>([]);
-   let navigate = useNavigate();
+export function Eventss() {
+    const [events, setEvents] = useState<Event[]>([]);
+    let navigate = useNavigate();
 
-   useEffect(() => {
-      // getAllEvents().then((events: Event[]) => {
-      //    // console.log(events);
-      //    setEvents(events);
-      // });
-   }, []);
+    useEffect(() => {
+        // getAllEvents().then((events: Event[]) => {
+        //    // console.log(events);
+        //    setEvents(events);
+        // });
+    }, []);
 
-   return (
-      <div>
-         <Button variant="contained" onClick={() => navigate('/newevent')}>Create Event</Button>
-         <GetEvents />
+    return (
+        <div>
+            <Button variant="contained" onClick={() => navigate('/newevent')}>Create Event</Button>
+            {/* <GetEvents /> */}
 
-         {events.map(event => (
-            // <EventComponent
-            //    key={event.eventid!.toString()}
-            //    event={event}
-            //    setEvents={setEvents} />
+            {events.map(event => (
+                // <EventComponent
+                //    key={event.eventid!.toString()}
+                //    event={event}
+                //    setEvents={setEvents} />
 
-            <div key={event.eventid!.toString()} style={{ border: '1px solid black', padding: '15px', marginBottom: '10px' }}>
-               {/* <div style={{marginBottom: '10px'}}>
+                <div key={event.eventid!.toString()} style={{ border: '1px solid black', padding: '15px', marginBottom: '10px' }}>
+                    {/* <div style={{marginBottom: '10px'}}>
                   <img alt='' height='40px' src={event.image0}></img>
                   <img alt='' height='40px' style={{marginLeft: '10px'}} src={event.image1 ?? ''}></img>
                </div>
@@ -36,59 +36,61 @@ export function Events() {
                <div style={{fontWeight: 'bold', fontSize: '25px'}}>{event.description}</div><br />
                <div>{event.league}</div><br />
                <div>{new Date(event.starttime).toLocaleString()}</div><br /> */}
-            </div>
-         ))}
-      </div>
-   );
+                </div>
+            ))}
+        </div>
+    );
 }
 
-export function GetEvents() {
-   const [initialState, setInitialState] = useState<Event[]>([]);
-   useEffect(() => {
-      fetch('http://ec2-35-175-246-215.compute-1.amazonaws.com:3000/api/events').then(res => {
-         if (res.ok) {
-            return res.json()
-         }
-      }).then(jsonResponse => setInitialState(jsonResponse.items))
-   }, [])
+export function Events() {
+    const [events, setEvents] = useState<Event[]>([]);
+    let navigate = useNavigate();
 
-   return (
-      <div>
-         <Grid container>
-            {initialState.length > 0 && initialState.map(e =>
-               <Grid item>
-                  <Card variant="outlined" style={{ margin: "10px" }}>
-                     <CardContent>
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_API_URL}/events`).then(res => {
+            if (res.ok) {
+                return res.json()
+            }
+        }).then(json => setEvents((json.items as any[]).map(event => {
+            return {
+                ...event,
+                resolution_date: new Date(parseInt(event.resolution_date)).toLocaleDateString()
+            } as Event
+        })))
+    }, [])
 
-                        <Typography variant="h5" component="div">
-                           {e.name}
+    return (
+        <div>
+            <Button variant="contained" onClick={() => navigate('/newevent')}>Request New Event</Button>
 
-                        </Typography>
-                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                           {"category: " + e.category}
-                        </Typography>
-                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                           {"description: " + e.description}
-                        </Typography>
-                        <Typography variant="body2">
-                           {"expires at " + readTimestamp(e.resolution_date)}
-                        </Typography>
-                     </CardContent>
-                  </Card>
-               </Grid>
-            )}
-         </Grid>
-      </div>
+            <Grid container>
+                {events.length > 0 && events.map(e =>
+                    <Grid item lg={6} key={e.name}>
+                        <Card variant="outlined" style={{ margin: "40px", padding: "20px" }}>
+                            <CardContent>
+                                <Typography variant="h5" component="div">
+                                    {e.name}
+                                </Typography>
+                                <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
+                                    {"category: " + e.category}
+                                </Typography>
+                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                    {"description: " + e.description}
+                                </Typography>
+                                <Typography variant="body2">
+                                    {"resolves at " + e.resolution_date}
+                                </Typography>
 
-   );
-}
+                                <div style={{ marginTop: '20px'}}>
+                                    <Button variant="contained" style={{ marginRight: "10px" }}>Buy Yes</Button>
+                                    <Button variant="contained">Buy No</Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                )}
+            </Grid>
+        </div>
 
-function readTimestamp(timestamp: string) {
-   let a = parseInt(timestamp);
-   a = a / 1000000; //time is now in seconds since jan 1 1601
-   let seconds = 11644473600;//seconds between jan 1 1601 and jan 1 1970
-   a = a - seconds; //time in seconds since jan 1 1970
-   a = a * 1000;//miliseconds since jan 1 1970 (javascript timestamp format)
-   let date = new Date(a);
-   return date.toLocaleDateString("en-US");
+    );
 }
