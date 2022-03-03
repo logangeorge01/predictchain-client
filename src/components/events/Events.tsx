@@ -40,7 +40,7 @@ export function Events() {
                                     {"description: " + e.description}
                                 </Typography>
                                 <Typography variant="body2">
-                                    {"resolves at " + e.resolution_date}
+                                    {"resolves on " + e.resolution_date}
                                 </Typography>
 
                                 <div style={{ marginTop: '20px'}}>

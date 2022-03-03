@@ -14,6 +14,13 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import { Content, Context } from '../wallet/Wallet';
 import './Navbar.css'
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { useState } from 'react';
+import { FC } from 'react';
+import { useCallback } from 'react';
+import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { useEffect } from 'react';
 
 const pages = ['events', 'portfolio', 'admin'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -38,7 +45,7 @@ const ResponsiveAppBar = () => {
     };
 
     return (
-        <AppBar position= "static">
+        <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
@@ -112,6 +119,10 @@ const ResponsiveAppBar = () => {
                         ))}
                     </Box>
 
+                    <Box sx={{ flexGrow: 0, mr: 2 }}>
+                        <GetBalance />
+                    </Box>
+
                     <Box sx={{ flexGrow: 0 }}>
                         <Content />
                     </Box>
@@ -121,3 +132,36 @@ const ResponsiveAppBar = () => {
     );
 };
 export default ResponsiveAppBar;
+
+
+
+const GetBalance: FC = () => {
+    const { connection } = useConnection();
+    const { publicKey } = useWallet();
+    const [checkAmount, setAmount] = useState('0');
+
+
+    const checkBalance = useCallback(async () => {
+        if (!publicKey) {
+            return;
+            // throw new WalletNotConnectedError();
+        }
+
+        const walletBalance = await connection.getBalance(publicKey, 'confirmed');
+        const walletBalanceSOL = (walletBalance / LAMPORTS_PER_SOL).toFixed(2);
+        setAmount(walletBalanceSOL);
+        // console.log(walletBalanceSOL);
+        // console.log(publicKey);
+        // balanceElement= <p>{walletBalanceSOL}</p>;
+    }, [connection, publicKey]);
+
+    useEffect(() => {
+        // console.log('WalletBalance checked');
+        checkBalance();
+    }, [publicKey, checkBalance]);
+
+    return (
+        <Button onClick={checkBalance} variant="text" ><p>{checkAmount} SOL</p></Button>
+    );
+};
+
