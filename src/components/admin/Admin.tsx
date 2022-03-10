@@ -66,7 +66,7 @@ export function Admin() {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <Grid container>
                 {events.length > 0 && events.map(e =>
-                    <Grid item lg={8} key={e.name}>
+                    <Grid item lg={4} key={e.name}>
                         <Card variant="outlined" style={{ margin: "40px", padding: "20px" }}>
                             <CardContent>
                                 <Typography variant="h5" component="div">
