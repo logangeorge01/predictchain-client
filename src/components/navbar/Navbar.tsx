@@ -22,10 +22,10 @@ import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { useEffect } from 'react';
 
-const pages = ['events', 'portfolio', 'admin'];
+// const pages = ['events', 'portfolio', 'admin'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar= () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -43,6 +43,33 @@ const ResponsiveAppBar = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const { publicKey } = useWallet();
+
+    const [pages, setPages] = useState(['events', 'portfolio']);
+
+    useEffect(() => {
+        if (!publicKey) {
+            return;
+        }
+        
+        fetch(`${process.env.REACT_APP_API_URL}/is-admin`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-api-key': publicKey!.toString(),
+            }
+        }).then(res => {
+            if (res?.ok) {
+                return res.json();
+            }
+        }).then(json => {
+            if (json && json.result) {
+                setPages(['events', 'portfolio', 'admin']);
+            }
+        });
+     }, [publicKey])
 
     return (
         <AppBar position="static">
@@ -86,15 +113,15 @@ const ResponsiveAppBar = () => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                            {pages.map(page => {
+                                (<MenuItem key={page} onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
                                         <Link style={{ textDecoration: "none", color: "white" }} to={`/${page}`}>
                                             {page}
                                         </Link>
                                     </Typography>
-                                </MenuItem>
-                            ))}
+                                </MenuItem>)
+                            })}
                         </Menu>
                     </Box>
                     <Typography
@@ -138,30 +165,24 @@ export default ResponsiveAppBar;
 const GetBalance: FC = () => {
     const { connection } = useConnection();
     const { publicKey } = useWallet();
-    const [checkAmount, setAmount] = useState('0');
-
+    const [amount, setAmount] = useState('0');
 
     const checkBalance = useCallback(async () => {
         if (!publicKey) {
             return;
-            // throw new WalletNotConnectedError();
         }
 
         const walletBalance = await connection.getBalance(publicKey, 'confirmed');
         const walletBalanceSOL = (walletBalance / LAMPORTS_PER_SOL).toFixed(2);
         setAmount(walletBalanceSOL);
-        // console.log(walletBalanceSOL);
-        // console.log(publicKey);
-        // balanceElement= <p>{walletBalanceSOL}</p>;
     }, [connection, publicKey]);
 
     useEffect(() => {
-        // console.log('WalletBalance checked');
         checkBalance();
-    }, [publicKey, checkBalance]);
+    }, [publicKey]);
 
     return (
-        <Button onClick={checkBalance} variant="text" ><p>{checkAmount} SOL</p></Button>
+        <Button onClick={checkBalance} variant="text"><p>{amount} SOL</p></Button>
     );
 };
 

@@ -14,7 +14,9 @@ export const App: FC = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        navigate('/events')
+        if (location.pathname === '/') {
+            navigate('/events');
+        }
     }, [])
     
     return (

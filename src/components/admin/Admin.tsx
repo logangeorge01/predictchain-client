@@ -4,41 +4,47 @@ import { useNavigate } from "react-router-dom";
 import { Event } from "../../solana/models";
 import { Button, Card, CardContent, Typography, Grid } from '@mui/material';
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useCallback } from "react";
 
 export function Admin() {
     const [events, setEvents] = useState<Event[]>([]);
     let navigate = useNavigate();
     const { publicKey } = useWallet();
 
-    const checkAdmin = useCallback(async () => {
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    const [adminChecked, setAdminChecked] = useState<boolean>(false);
+
+    useEffect(() => {
         if (!publicKey) {
-            // throw new WalletNotConnectedError();
-            navigate('/events');
+            return;
         }
         
-        return fetch(`${process.env.REACT_APP_API_URL}/is-admin`, {
+        fetch(`${process.env.REACT_APP_API_URL}/is-admin`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'x-api-key': publicKey!.toString(),
             }
-        })
-    }, [publicKey]);
-
-    useEffect(() => {
-        checkAdmin().then(res => {
-            if (res.ok) {
-                return res.json()
+        }).then(res => {
+            if (res?.ok) {
+                return res.json();
             }
         }).then(json => {
-            if (!json || !json.result || !json.result.isAdmin) {
-                // navigate('/events')
-                // TODO NEED TO NAVIGATE AWAY IF NOT ADMIN
-            }
+            setAdminChecked(true);
+            setIsAdmin(json && json.result);
         });
+    }, [publicKey])
 
+    useEffect(() => {
+        if (!adminChecked || !publicKey) {
+            return;
+        }
+
+        if (!isAdmin) {
+            navigate('/events');
+            return;
+        }
+            
         fetch(`${process.env.REACT_APP_API_URL}/pending-events`, {
             method: 'GET',
             headers: {
@@ -60,9 +66,9 @@ export function Admin() {
                 }));
             }
         })
-    }, [checkAdmin, publicKey])
+    }, [isAdmin])
 
-    return (
+    return isAdmin ? (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <Grid container>
                 {events.length > 0 && events.map(e =>
@@ -92,5 +98,5 @@ export function Admin() {
                 )}
             </Grid>
         </div>
-    );
+    ) : (<div></div>);
 }

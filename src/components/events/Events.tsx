@@ -43,10 +43,12 @@ export function Events() {
                                     {"resolves on " + e.resolution_date}
                                 </Typography>
 
-                                <div style={{ marginTop: '20px'}}>
+                                <Button style={{ marginTop: '20px' }} variant="contained">TRADE</Button>
+
+                                {/* <div style={{ marginTop: '20px'}}>
                                     <Button variant="contained" style={{ marginRight: "10px" }}>Buy Yes</Button>
                                     <Button variant="contained">Buy No</Button>
-                                </div>
+                                </div> */}
                             </CardContent>
                         </Card>
                     </Grid>
