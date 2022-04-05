@@ -69,34 +69,41 @@ export function Admin() {
     }, [isAdmin])
 
     return isAdmin ? (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <Grid container>
-                {events.length > 0 && events.map(e =>
-                    <Grid item lg={4} key={e.name}>
-                        <Card variant="outlined" style={{ margin: "40px", padding: "20px" }}>
-                            <CardContent>
-                                <Typography variant="h5" component="div">
-                                    {e.name}
-                                </Typography>
-                                <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
-                                    {"category: " + e.category}
-                                </Typography>
-                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                    {"description: " + e.description}
-                                </Typography>
-                                <Typography variant="body2">
-                                    {"resolves on " + e.resolution_date}
-                                </Typography>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: '70%' }}>
+            {events.length ? 
+            <>
+                <Typography style={{marginTop: '30px', marginBottom: '20px'}} variant="h3" component="div">Pending Events</Typography>
+                <Grid container>
+                    {events.length > 0 && events.map(e =>
+                        <Grid item lg={4} key={e.name}>
+                            <Card variant="outlined" style={{ margin: "20px", padding: "20px", borderRadius: '20px' }}>
+                                <CardContent>
+                                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                                        <img src={e.image_link} style={{objectFit: 'cover', width: '35px', height: '35px', borderRadius: '100%', marginRight: '10px'}}></img>
+                                        <Typography variant="h5" component="div">
+                                            {e.name}
+                                        </Typography>
+                                    </div>
+                                    <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
+                                        {"category: " + e.category}
+                                    </Typography>
+                                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                        {"description: " + e.description}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        {"resolves on " + e.resolution_date}
+                                    </Typography>
 
-                                <div style={{ marginTop: '20px' }}>
-                                    <Button variant="contained" style={{ marginRight: "10px" }}>Deny Event</Button>
-                                    <Button variant="contained">Approve Event</Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                )}
-            </Grid>
+                                    <div style={{ marginTop: '20px' }}>
+                                        <Button variant="contained" style={{ marginRight: "10px" }}>Approve</Button>
+                                        <Button variant="contained">Deny</Button>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    )}
+                </Grid>
+            </> : <Typography style={{marginTop: '80px'}} variant="h3" component="div">No Pending Events</Typography>}
         </div>
     ) : (<div></div>);
 }

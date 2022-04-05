@@ -22,17 +22,20 @@ export function Events() {
     }, [])
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: '30px', width: '70%' }}>
             <Button variant="contained" onClick={() => navigate('/newevent')}>Request New Event</Button>
 
-            <Grid container>
+            {events.length ? <Grid container>
                 {events.length > 0 && events.map(e =>
                     <Grid item lg={4} key={e.name}>
-                        <Card variant="outlined" style={{ margin: "40px", padding: "20px" }}>
+                        <Card variant="outlined" style={{ margin: "40px", padding: "20px", borderRadius: '20px' }}>
                             <CardContent>
-                                <Typography variant="h5" component="div">
-                                    {e.name}
-                                </Typography>
+                                <div style={{display: 'flex', flexDirection: 'row'}}>
+                                    <img src={e.image_link} style={{objectFit: 'cover', width: '35px', height: '35px', borderRadius: '100%', marginRight: '10px'}}></img>
+                                    <Typography variant="h5" component="div">
+                                        {e.name}
+                                    </Typography>
+                                </div>
                                 <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
                                     {"category: " + e.category}
                                 </Typography>
@@ -44,16 +47,11 @@ export function Events() {
                                 </Typography>
 
                                 <Button style={{ marginTop: '20px' }} variant="contained">TRADE</Button>
-
-                                {/* <div style={{ marginTop: '20px'}}>
-                                    <Button variant="contained" style={{ marginRight: "10px" }}>Buy Yes</Button>
-                                    <Button variant="contained">Buy No</Button>
-                                </div> */}
                             </CardContent>
                         </Card>
                     </Grid>
                 )}
-            </Grid>
+            </Grid> : <Typography style={{marginTop: '80px'}} variant="h3" component="div">No Events</Typography>}
         </div>
     );
 }

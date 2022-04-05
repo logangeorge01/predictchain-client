@@ -5,7 +5,6 @@ import { App } from './App';
 import { Admin } from './components/admin/Admin';
 import { Events } from './components/events/Events';
 import { NewEvent } from './components/events/NewEvent';
-import { NewEventAlt } from './components/events/NewEventAlt';
 import { Portfolio } from './components/portfolio/Portfolio';
 
 ReactDOM.render(
@@ -16,7 +15,7 @@ ReactDOM.render(
                     <Route path="events" element={<Events />} />
                     <Route path="portfolio" element={<Portfolio />} />
                     <Route path="admin" element={<Admin />} />
-                    <Route path="newevent" element={<NewEventAlt />} />
+                    <Route path="newevent" element={<NewEvent />} />
                 </Route>
             </Routes>
         </BrowserRouter>

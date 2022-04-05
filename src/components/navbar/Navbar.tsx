@@ -7,23 +7,17 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
-import { Content, Context } from '../wallet/Wallet';
+import { Content } from '../wallet/Wallet';
 import './Navbar.css'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useState } from 'react';
 import { FC } from 'react';
 import { useCallback } from 'react';
-import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { useEffect } from 'react';
-
-// const pages = ['events', 'portfolio', 'admin'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar= () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
