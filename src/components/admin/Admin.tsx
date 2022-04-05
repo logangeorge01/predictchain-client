@@ -59,6 +59,7 @@ export function Admin() {
         }).then(json => {
             if (json && json.items) {
                 setEvents(((json && json.items ? json.items : []) as any[]).map(event => {
+                    // console.log(event);
                     return {
                         ...event,
                         resolution_date: new Date(parseInt(event.resolution_date)).toLocaleDateString()
@@ -67,6 +68,40 @@ export function Admin() {
             }
         })
     }, [isAdmin])
+
+    function approveEvent(eventid: string) {
+        fetch(`${process.env.REACT_APP_API_URL}/approve-event/${eventid}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-api-key': publicKey!.toString(),
+            }
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(json => {
+            setEvents(events.filter(e => e.id != json.event.id));
+        });
+    };
+
+    function denyEvent(eventid: string) {
+        fetch(`${process.env.REACT_APP_API_URL}/events/${eventid}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-api-key': publicKey!.toString(),
+            }
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(json => {
+            setEvents(events.filter(e => e.id != json.event.id));
+        });
+    };
 
     return isAdmin ? (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: '70%' }}>
@@ -95,8 +130,8 @@ export function Admin() {
                                     </Typography>
 
                                     <div style={{ marginTop: '20px' }}>
-                                        <Button variant="contained" style={{ marginRight: "10px" }}>Approve</Button>
-                                        <Button variant="contained">Deny</Button>
+                                        <Button variant="contained" onClick={() => approveEvent(e.id!)} style={{ marginRight: '10px' }}>Approve</Button>
+                                        <Button variant="contained" onClick={() => denyEvent(e.id!)}>Deny</Button>
                                     </div>
                                 </CardContent>
                             </Card>

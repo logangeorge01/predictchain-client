@@ -28,9 +28,7 @@ export function NewEvent() {
         date = resolution_date;
     }
 
-    async function onSubmit(e: any) {
-        e.preventDefault();
-
+    function onSubmit() {
         if (!name || !description || !resolution_date || !category) {
             alert('Must provide all required fields');
             return;
