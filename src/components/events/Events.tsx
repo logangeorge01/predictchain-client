@@ -16,7 +16,7 @@ export function Events() {
         }).then(json => setEvents(((json && json.items ? json.items : []) as any[]).map(event => {
             return {
                 ...event,
-                resolution_date: new Date(parseInt(event.resolution_date)).toLocaleDateString()
+                resolutionDate: new Date(parseInt(event.resolutionDate)).toLocaleDateString()
             } as Event
         })))
     }, [])
@@ -31,7 +31,7 @@ export function Events() {
                         <Card variant="outlined" style={{ margin: "40px", padding: "20px", borderRadius: '20px' }}>
                             <CardContent>
                                 <div style={{display: 'flex', flexDirection: 'row'}}>
-                                    <img src={e.image_link} style={{objectFit: 'cover', width: '35px', height: '35px', borderRadius: '100%', marginRight: '10px'}}></img>
+                                    <img src={e.imageLink} style={{objectFit: 'cover', width: '35px', height: '35px', borderRadius: '100%', marginRight: '10px'}}></img>
                                     <Typography variant="h5" component="div">
                                         {e.name}
                                     </Typography>
@@ -43,10 +43,10 @@ export function Events() {
                                     {"description: " + e.description}
                                 </Typography>
                                 <Typography variant="body2">
-                                    {"resolves on " + e.resolution_date}
+                                    {"Resolves on " + e.resolutionDate}
                                 </Typography>
 
-                                <Button style={{ marginTop: '20px' }} variant="contained">TRADE</Button>
+                                <Button onClick={() => navigate(`/event/${e.id!}`)} style={{ marginTop: '20px' }} variant="contained">TRADE</Button>
                             </CardContent>
                         </Card>
                     </Grid>

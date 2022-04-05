@@ -17,19 +17,19 @@ export function NewEvent() {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
-    const [resolution_date, setResolutionDate] = React.useState<Date | null>(null);
-    const [image_link, setImageLink] = useState('');
+    const [resolutionDate, setResolutionDate] = React.useState<Date | null>(null);
+    const [imageLink, setImageLink] = useState('');
 
     const { publicKey } = useWallet();
 
     let navigate = useNavigate();
     let date = new Date();
-    if (resolution_date) {
-        date = resolution_date;
+    if (resolutionDate) {
+        date = resolutionDate;
     }
 
     function onSubmit() {
-        if (!name || !description || !resolution_date || !category) {
+        if (!name || !description || !resolutionDate || !category) {
             alert('Must provide all required fields');
             return;
         }
@@ -37,9 +37,9 @@ export function NewEvent() {
         const newevent = new Event({
             name,
             description,
-            resolution_date: date.getTime().toString(),
+            resolutionDate: date.getTime().toString(),
             category,
-            image_link: image_link || 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Square_gray.svg/200px-Square_gray.svg.png'
+            imageLink: imageLink || 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Square_gray.svg/200px-Square_gray.svg.png'
         });
 
         fetch(`${process.env.REACT_APP_API_URL}/pending-events`, {
@@ -115,7 +115,7 @@ export function NewEvent() {
                         <DatePicker
                             disablePast
                             label="Enter Date"
-                            value={resolution_date}
+                            value={resolutionDate}
                             onChange={(newValue) => {
                                 setResolutionDate(newValue);
                                 // if (newValue) {
@@ -130,7 +130,7 @@ export function NewEvent() {
                     <TextField
                         id="outlined-name"
                         label="Image Link"
-                        value={image_link}
+                        value={imageLink}
                         style={{width:'100%'}}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                             setImageLink(event.target.value)

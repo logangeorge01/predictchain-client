@@ -7,17 +7,17 @@ export class Event {
     admin?: Uint8Array;
     name: string;
     description: string;
-    resolution_date: string;
+    resolutionDate: string;
     category: string;
-    image_link: string;
+    imageLink: string;
 
     constructor(e: Event) {
         this.admin = e.admin;
         this.name = e.name;
         this.description = e.description;
-        this.resolution_date = e.resolution_date;
+        this.resolutionDate = e.resolutionDate;
         this.category = e.category;
-        this.image_link = e.image_link;
+        this.imageLink = e.imageLink;
     }
 
     static schema: any = new Map([
@@ -28,9 +28,9 @@ export class Event {
                     ['admin', [32]],
                     ['name', 'string'],
                     ['description', 'string'],
-                    ['resolution_date', 'u64'],
+                    ['resolutionDate', 'u64'],
                     ['category', 'string'],
-                    ['image_link', 'string'],
+                    ['imageLink', 'string'],
                 ]
             }]
     ]);
