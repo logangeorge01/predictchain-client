@@ -23,7 +23,7 @@ export function Events() {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: '30px', width: '70%' }}>
-            <Button variant="contained" onClick={() => navigate('/newevent')}>Request New Event</Button>
+            <Button variant="contained" color="secondary" onClick={() => navigate('/newevent')}>Request New Event</Button>
 
             {events.length ? <Grid container>
                 {events.length > 0 && events.map(e =>

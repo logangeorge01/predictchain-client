@@ -6,7 +6,7 @@ import './NewEvent.css';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TextField from '@mui/material/TextField';
-import DatePicker from '@mui/lab/DatePicker';
+import DateTimePicker from '@mui/lab/DateTimePicker';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -62,7 +62,7 @@ export function NewEvent() {
 
     return (
         <div className='newevent'>
-            <Typography style={{marginTop: '30px', marginBottom: '20px'}} variant="h4" component="div">Request a New Event</Typography>
+            <Typography style={{ marginTop: '30px', marginBottom: '20px' }} variant="h4" component="div">Request a New Event</Typography>
 
             <Box
                 component="form"
@@ -79,7 +79,7 @@ export function NewEvent() {
                         id="outlined-name"
                         label="Title"
                         value={name}
-                        style={{width:'100%'}}
+                        style={{ width: '100%' }}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                             setName(event.target.value)
                         }}
@@ -91,7 +91,7 @@ export function NewEvent() {
                         id="outlined-name"
                         label="Description"
                         value={description}
-                        style={{width:'100%'}}
+                        style={{ width: '100%' }}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                             setDescription(event.target.value)
                         }}
@@ -103,7 +103,7 @@ export function NewEvent() {
                         id="outlined-name"
                         label="Category"
                         value={category}
-                        style={{width:'100%'}}
+                        style={{ width: '100%' }}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                             setCategory(event.target.value)
                         }}
@@ -112,17 +112,14 @@ export function NewEvent() {
 
                 <div className='input'>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker
+                        <DateTimePicker
                             disablePast
-                            label="Enter Date"
+                            label="Resolution Date and Time"
                             value={resolutionDate}
                             onChange={(newValue) => {
                                 setResolutionDate(newValue);
-                                // if (newValue) {
-                                //     console.log(newValue.getTime().toString())
-                                // }
                             }}
-                            renderInput={(params) => <TextField {...params} style={{width:'100%'}} required/>}
+                            renderInput={(params) => <TextField {...params} style={{ width: '100%' }} required />}
                         />
                     </LocalizationProvider>
                 </div>
@@ -131,16 +128,16 @@ export function NewEvent() {
                         id="outlined-name"
                         label="Image Link"
                         value={imageLink}
-                        style={{width:'100%'}}
+                        style={{ width: '100%' }}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                             setImageLink(event.target.value)
                         }}
                     />
                 </div>
                 <div className='input'>
-                    <Stack spacing={1} direction="row" style={{float:'right'}}>
-                        <Button  className='formbutton' variant='contained' onClick={onCancel}>Cancel</Button>
-                        <Button className='formbutton' variant='contained' onClick={onSubmit}>Submit</Button>
+                    <Stack spacing={1} direction="row" style={{ float: 'right' }}>
+                        <Button className='formbutton' color="secondary" variant='contained' onClick={onCancel}>Cancel</Button>
+                        <Button className='formbutton' color="secondary" variant='contained' onClick={onSubmit}>Submit</Button>
                     </Stack>
                 </div>
             </Box>
