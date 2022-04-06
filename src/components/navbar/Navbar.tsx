@@ -171,12 +171,23 @@ const GetBalance: FC = () => {
         setAmount(walletBalanceSOL);
     }, [connection, publicKey]);
 
+    async function airdrop() {
+        if (!publicKey) {
+            return;
+        }
+
+        const sig = await connection.requestAirdrop(publicKey, 2 * LAMPORTS_PER_SOL);
+        await connection.confirmTransaction(sig);
+
+        checkBalance();
+    }
+
     useEffect(() => {
         checkBalance();
     }, [publicKey]);
 
     return (
-        <Button onClick={checkBalance} variant="text"><p>{amount} SOL</p></Button>
+        <Button onClick={airdrop} variant="text"><p>{amount} SOL</p></Button>
     );
 };
 
