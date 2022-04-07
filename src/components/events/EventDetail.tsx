@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { getAllEvents } from "../../solana/functions";
 import { Event } from "../../solana/models";
-import { Button, Card, CardContent, Typography, Grid, TextField } from '@mui/material';
+import { Button, Card, CardContent, Typography, Grid, TextField, Paper } from '@mui/material';
 
 export function EventDetail() {
     const [event, setEvent] = useState<Event>();
@@ -46,6 +46,7 @@ export function EventDetail() {
     }
 
     return event ? (
+        <Paper style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%'}}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: '30px', width: '70%' }}>
             <Card variant="outlined" style={{ margin: "40px", padding: "60px", borderRadius: '20px' }}>
                 <CardContent>
@@ -112,5 +113,6 @@ export function EventDetail() {
                 </CardContent>
             </Card>
         </div>
+        </Paper>
     ) : <div></div>;
 }

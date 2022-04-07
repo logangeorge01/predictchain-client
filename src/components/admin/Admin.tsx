@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { getAllEvents } from "../../solana/functions";
 import { Event } from "../../solana/models";
-import { Button, Card, CardContent, Typography, Grid } from '@mui/material';
+import { Button, Card, CardContent, Typography, Grid, Paper } from '@mui/material';
 import { useWallet } from "@solana/wallet-adapter-react";
 
 export function Admin() {
@@ -103,6 +103,7 @@ export function Admin() {
     };
 
     return isAdmin ? (
+        <Paper style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%'}}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: '70%' }}>
             {events.length ? 
             <>
@@ -139,5 +140,6 @@ export function Admin() {
                 </Grid>
             </> : <Typography style={{marginTop: '80px'}} variant="h3" component="div">No Pending Events</Typography>}
         </div>
+        </Paper>
     ) : (<div></div>);
 }

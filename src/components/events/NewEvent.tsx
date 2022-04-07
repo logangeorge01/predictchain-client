@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Typography } from '@mui/material';
+import { Typography, Paper } from '@mui/material';
 
 export function NewEvent() {
     const [name, setName] = useState('');
@@ -61,87 +61,89 @@ export function NewEvent() {
     }
 
     return (
-        <div className='newevent'>
-            <Typography style={{ marginTop: '30px', marginBottom: '20px' }} variant="h4" component="div">Request a New Event</Typography>
+        <Paper style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%'}}>
+            <div className='newevent'>
+                <Typography style={{ marginTop: '30px', marginBottom: '20px' }} variant="h4" component="div">Request a New Event</Typography>
 
-            <Box
-                component="form"
-                sx={{
-                    '& > :not(style)': { m: 2, width: '50ch' },
-                }}
-                noValidate
-                autoComplete="off"
-            >
+                <Box
+                    component="form"
+                    sx={{
+                        '& > :not(style)': { m: 2, width: '50ch' },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                >
 
-                <div className='input'>
-                    <TextField
-                        required
-                        id="outlined-name"
-                        label="Title"
-                        value={name}
-                        style={{ width: '100%' }}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            setName(event.target.value)
-                        }}
-                    />
-                </div>
-                <div className='input'>
-                    <TextField
-                        required
-                        id="outlined-name"
-                        label="Description"
-                        value={description}
-                        style={{ width: '100%' }}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            setDescription(event.target.value)
-                        }}
-                    />
-                </div>
-                <div className='input'>
-                    <TextField
-                        required
-                        id="outlined-name"
-                        label="Category"
-                        value={category}
-                        style={{ width: '100%' }}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            setCategory(event.target.value)
-                        }}
-                    />
-                </div>
-
-                <div className='input'>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                            disablePast
-                            label="Resolution Date and Time"
-                            value={resolutionDate}
-                            onChange={(newValue) => {
-                                setResolutionDate(newValue);
+                    <div className='input'>
+                        <TextField
+                            required
+                            id="outlined-name"
+                            label="Title"
+                            value={name}
+                            style={{ width: '100%' }}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setName(event.target.value)
                             }}
-                            renderInput={(params) => <TextField {...params} style={{ width: '100%' }} required />}
                         />
-                    </LocalizationProvider>
-                </div>
-                <div className='input'>
-                    <TextField
-                        id="outlined-name"
-                        label="Image Link"
-                        value={imageLink}
-                        style={{ width: '100%' }}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            setImageLink(event.target.value)
-                        }}
-                    />
-                </div>
-                <div className='input'>
-                    <Stack spacing={1} direction="row" style={{ float: 'right' }}>
-                        <Button className='formbutton' color="secondary" variant='contained' onClick={onCancel}>Cancel</Button>
-                        <Button className='formbutton' color="secondary" variant='contained' onClick={onSubmit}>Submit</Button>
-                    </Stack>
-                </div>
-            </Box>
+                    </div>
+                    <div className='input'>
+                        <TextField
+                            required
+                            id="outlined-name"
+                            label="Description"
+                            value={description}
+                            style={{ width: '100%' }}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setDescription(event.target.value)
+                            }}
+                        />
+                    </div>
+                    <div className='input'>
+                        <TextField
+                            required
+                            id="outlined-name"
+                            label="Category"
+                            value={category}
+                            style={{ width: '100%' }}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setCategory(event.target.value)
+                            }}
+                        />
+                    </div>
 
-        </div>
+                    <div className='input'>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DateTimePicker
+                                disablePast
+                                label="Resolution Date and Time"
+                                value={resolutionDate}
+                                onChange={(newValue) => {
+                                    setResolutionDate(newValue);
+                                }}
+                                renderInput={(params) => <TextField {...params} style={{ width: '100%' }} required />}
+                            />
+                        </LocalizationProvider>
+                    </div>
+                    <div className='input'>
+                        <TextField
+                            id="outlined-name"
+                            label="Image Link"
+                            value={imageLink}
+                            style={{ width: '100%' }}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setImageLink(event.target.value)
+                            }}
+                        />
+                    </div>
+                    <div className='input'>
+                        <Stack spacing={1} direction="row" style={{ float: 'right' }}>
+                            <Button className='formbutton'  variant='contained' onClick={onCancel}>Cancel</Button>
+                            <Button className='formbutton'  variant='contained' onClick={onSubmit}>Submit</Button>
+                        </Stack>
+                    </div>
+                </Box>
+
+            </div>
+        </Paper>
     );
 }
