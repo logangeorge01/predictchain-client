@@ -130,8 +130,8 @@ export function Admin() {
                                     </Typography>
 
                                     <div style={{ marginTop: '20px' }}>
-                                        <Button variant="contained" onClick={() => approveEvent(e.id!)} style={{ marginRight: '10px', marginBottom: '10px' }}>Approve</Button>
-                                        <Button variant="contained" onClick={() => denyEvent(e.id!)}>Deny</Button>
+                                        <Button variant="contained" onClick={() => approveEvent(e.id!)} style={{ margin: '5px' }}>Approve</Button>
+                                        <Button variant="contained" onClick={() => denyEvent(e.id!)} style={{ margin: '5px' }}>Deny</Button>
                                     </div>
                                 </CardContent>
                             </Card>
