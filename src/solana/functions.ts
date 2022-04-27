@@ -18,9 +18,8 @@ import {
 
 const PROGRAMID = new PublicKey(process.env.REACT_APP_SOLANA_PROGRAM!);
 
-export async function createEvent(connection: Connection, wallet: WalletContextState) {
+export async function createEvent(connection: Connection, wallet: WalletContextState): Promise<string> {
     const eventAccount = Keypair.generate();
-    console.log(eventAccount.publicKey.toString());
     const yesMintAccount = Keypair.generate();
     const noMintAccount = Keypair.generate();
 
@@ -92,7 +91,6 @@ export async function createEvent(connection: Connection, wallet: WalletContextS
 
     console.log('DONE!');
 
-    // TODO update event pubkey in database here
-    // will need to update EVENT class in models.ts
+    return eventAccount.publicKey.toString();
 }
 

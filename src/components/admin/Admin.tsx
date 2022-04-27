@@ -9,7 +9,7 @@ import { createEvent } from "../../solana/functions";
 export function Admin() {
     const [events, setEvents] = useState<Event[]>([]);
     let navigate = useNavigate();
-    // const { publicKey } = useWallet();
+
     const wallet = useWallet();
     const { connection } = useConnection();
 
@@ -71,24 +71,25 @@ export function Admin() {
         })
     }, [isAdmin])
 
-    function approveEvent(eventid: string) {
-        // fetch(`${process.env.REACT_APP_API_URL}/approve-event/${eventid}`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json',
-        //         'x-api-key': wallet.publicKey!.toString(),
-        //     }
-        // }).then(res => {
-        //     if (res.status === 200) {
-        //         return res.json();
-        //     }
-        // }).then(json => {
-        //     setEvents(events.filter(e => e.id != json.event.id));
-        // });
-
+    async function approveEvent(eventid: string) {
         //solana stuff
-        createEvent(connection, wallet);
+        const eventPublicKey = await createEvent(connection, wallet);
+
+        fetch(`${process.env.REACT_APP_API_URL}/approve-event/${eventid}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-api-key': wallet.publicKey!.toString(),
+            },
+            //body: JSON.stringify({ eventPublicKey: newevent })
+        }).then(res => {
+            if (res.status === 200) {
+                return res.json();
+            }
+        }).then(json => {
+            setEvents(events.filter(e => e.id != json.event.id));
+        });
     };
 
     function denyEvent(eventid: string) {
