@@ -74,7 +74,6 @@ export function Admin() {
     async function approveEvent(eventid: string) {
         //solana stuff
         const eventPublicKey = await createEvent(connection, wallet);
-
         fetch(`${process.env.REACT_APP_API_URL}/approve-event/${eventid}`, {
             method: 'POST',
             headers: {
@@ -82,7 +81,7 @@ export function Admin() {
                 'Content-Type': 'application/json',
                 'x-api-key': wallet.publicKey!.toString(),
             },
-            //body: JSON.stringify({ eventPublicKey: newevent })
+            body: JSON.stringify({ eventPublicKey: eventPublicKey })
         }).then(res => {
             if (res.status === 200) {
                 return res.json();

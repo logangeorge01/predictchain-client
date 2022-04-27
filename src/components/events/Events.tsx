@@ -20,7 +20,6 @@ export function Events() {
             } as Event
         })))
     }, [])
-
     return (
         <Paper style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%'}}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: '30px', width: '70%' }}>
