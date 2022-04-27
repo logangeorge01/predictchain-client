@@ -3,18 +3,21 @@ import { useNavigate } from "react-router-dom";
 // import { getAllEvents } from "../../solana/functions";
 import { Event } from "../../solana/models";
 import { Button, Card, CardContent, Typography, Grid, Paper } from '@mui/material';
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { createEvent } from "../../solana/functions";
 
 export function Admin() {
     const [events, setEvents] = useState<Event[]>([]);
     let navigate = useNavigate();
-    const { publicKey } = useWallet();
+    // const { publicKey } = useWallet();
+    const wallet = useWallet();
+    const { connection } = useConnection();
 
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [adminChecked, setAdminChecked] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!publicKey) {
+        if (!wallet.publicKey) {
             return;
         }
         
@@ -23,7 +26,7 @@ export function Admin() {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'x-api-key': publicKey!.toString(),
+                'x-api-key': wallet.publicKey!.toString(),
             }
         }).then(res => {
             if (res?.ok) {
@@ -33,10 +36,10 @@ export function Admin() {
             setAdminChecked(true);
             setIsAdmin(json && json.result);
         });
-    }, [publicKey])
+    }, [wallet.publicKey])
 
     useEffect(() => {
-        if (!adminChecked || !publicKey) {
+        if (!adminChecked || !wallet.publicKey) {
             return;
         }
 
@@ -50,7 +53,7 @@ export function Admin() {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'x-api-key': publicKey!.toString(),
+                'x-api-key': wallet.publicKey!.toString(),
             }
         }).then(res => {
             if (res.ok) {
@@ -69,20 +72,23 @@ export function Admin() {
     }, [isAdmin])
 
     function approveEvent(eventid: string) {
-        fetch(`${process.env.REACT_APP_API_URL}/approve-event/${eventid}`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'x-api-key': publicKey!.toString(),
-            }
-        }).then(res => {
-            if (res.status === 200) {
-                return res.json();
-            }
-        }).then(json => {
-            setEvents(events.filter(e => e.id != json.event.id));
-        });
+        // fetch(`${process.env.REACT_APP_API_URL}/approve-event/${eventid}`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json',
+        //         'x-api-key': wallet.publicKey!.toString(),
+        //     }
+        // }).then(res => {
+        //     if (res.status === 200) {
+        //         return res.json();
+        //     }
+        // }).then(json => {
+        //     setEvents(events.filter(e => e.id != json.event.id));
+        // });
+
+        //solana stuff
+        createEvent(connection, wallet);
     };
 
     function denyEvent(eventid: string) {
@@ -91,7 +97,7 @@ export function Admin() {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'x-api-key': publicKey!.toString(),
+                'x-api-key': wallet.publicKey!.toString(),
             }
         }).then(res => {
             if (res.status === 200) {

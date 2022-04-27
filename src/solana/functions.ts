@@ -1,155 +1,98 @@
-import { useConnection, useWallet, WalletContextState } from '@solana/wallet-adapter-react';
-// import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { deserialize, serialize } from 'borsh';
+import { WalletContextState } from '@solana/wallet-adapter-react';
+import { serialize } from 'borsh';
 import {
-   // Connection,
-   SystemProgram,
-   Transaction,
-   PublicKey,
-   TransactionInstruction,
-   Connection
+    SystemProgram,
+    Transaction,
+    PublicKey,
+    Connection,
+    Keypair
 } from '@solana/web3.js';
-import { Event } from './models';
+import { EventAccount } from './models';
 import BN from 'bn.js';
-// import { PROGRAMID } from '../PROGRAMID';
+import {
+    createInitializeMintInstruction, 
+    getMinimumBalanceForRentExemptMint,
+    MINT_SIZE,
+    TOKEN_PROGRAM_ID
+} from '@solana/spl-token';
 
-// const cluster = 'https://api.devnet.solana.com';
-// const cluster = 'http://localhost:8899';
-// const connection = new Connection(cluster, 'confirmed');
-// const network = WalletAdapterNetwork.Devnet;
-// const wallet = getPhantomWallet({ network }).adapter;
+const PROGRAMID = new PublicKey(process.env.REACT_APP_SOLANA_PROGRAM!);
 
-// const { connection } = useConnection();
-// const wallet = useWallet();
+export async function createEvent(connection: Connection, wallet: WalletContextState) {
+    const eventAccount = Keypair.generate();
+    console.log(eventAccount.publicKey.toString());
+    const yesMintAccount = Keypair.generate();
+    const noMintAccount = Keypair.generate();
 
-// export async function getAllEvents(): Promise<Event[]> {
-//    const { connection, wallet } = await checkWallet();
+    const newEvent = new EventAccount({
+        resolveAuthority: wallet.publicKey!.toBuffer(),
+        yesMintAddress: yesMintAccount.publicKey.toBuffer(),
+        noMintAddress: noMintAccount.publicKey.toBuffer(),
+        volume: new BN(0)
+    });
 
-//    let accounts = await connection.getProgramAccounts(PROGRAMID);
-//    let events: Event[] = [];
-//    accounts.forEach(pda => {
-//       try {
-//          let eventdata: Event = deserialize(Event.schema, Event, pda.account.data);
-//          events.push({
-//             admin: eventdata.admin,
-//             eventid: pda.pubkey,
-//             description: eventdata.description,
-//             starttime: (eventdata.starttime as any as BN).toNumber(),
-//             league: eventdata.league,
-//             image0: eventdata.image0,
-//             image1: eventdata.image1,
-//             side0: eventdata.side0,
-//             side1: eventdata.side1
-//          } as Event);
-//       } catch (err) {
-//          // console.log(err);
-//       }
-//    });
-//    return events.sort((a: Event, b: Event) => a.starttime - b.starttime);
-// }
+    let eventData = serialize(EventAccount.schema, newEvent);
+    const lamports = await connection.getMinimumBalanceForRentExemption(eventData.length);
 
-//100
-// export async function createEvent(event: Event) {
-//    // event = new Event({
-//    //    description: 'Alabama vs Georgia',
-//    //    starttime: 1641866400000,
-//    //    league: 'College Football',
-//    //    image0: 'https://a1.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/333.png&h=208&w=208',
-//    //    image1: 'https://a1.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/61.png&h=208&w=208'
-//    // })
+    const createEventAccount = SystemProgram.createAccount({
+        fromPubkey: wallet.publicKey!,
+        newAccountPubkey: eventAccount.publicKey,
+        lamports,
+        space: eventData.length,
+        programId: PROGRAMID
+    });
 
-//    const { connection, wallet } = await checkWallet();
+    const mintlamports = await getMinimumBalanceForRentExemptMint(connection);
 
-//    const seed = 'abcdef' + Math.random().toString();
-//    let newAccount = await PublicKey.createWithSeed(
-//       wallet.publicKey!,
-//       seed,
-//       PROGRAMID
-//    );
+    const createYesAccount = SystemProgram.createAccount({
+        fromPubkey: wallet.publicKey!,
+        newAccountPubkey: yesMintAccount.publicKey,
+        lamports: mintlamports,
+        space: MINT_SIZE,
+        programId: TOKEN_PROGRAM_ID
+    });
 
-//    event.admin = wallet.publicKey!.toBuffer();
+    const createNoAccount = SystemProgram.createAccount({
+        fromPubkey: wallet.publicKey!,
+        newAccountPubkey: noMintAccount.publicKey,
+        lamports: mintlamports,
+        space: MINT_SIZE,
+        programId: TOKEN_PROGRAM_ID
+    });
 
-//    let data = serialize(Event.schema, event);
-//    let ixdata = new Uint8Array([100, ...data]);
+    const createYesMint = createInitializeMintInstruction(
+        yesMintAccount.publicKey,
+        9,
+        PROGRAMID,
+        null
+    );
 
-//    const lamports = await connection.getMinimumBalanceForRentExemption(data.length);
-//    // console.log(data.length);
-//    const createProgramAccount = SystemProgram.createAccountWithSeed({
-//       fromPubkey: wallet.publicKey!,
-//       basePubkey: wallet.publicKey!,
-//       seed,
-//       newAccountPubkey: newAccount,
-//       lamports: lamports,
-//       space: data.length,
-//       programId: PROGRAMID,
-//    });
+    const createNoMint = createInitializeMintInstruction(
+        noMintAccount.publicKey,
+        9,
+        PROGRAMID,
+        null
+    );
 
-//    const instruction = new TransactionInstruction({
-//       keys: [
-//          { pubkey: newAccount, isSigner: false, isWritable: true },
-//          { pubkey: wallet.publicKey!, isSigner: true, isWritable: false }
-//       ],
-//       programId: PROGRAMID,
-//       data: Buffer.from(ixdata),
-//    });
+    const transaction = new Transaction();
+    transaction.add(
+        createEventAccount,
+        createYesAccount,
+        createNoAccount,
+        createYesMint,
+        createNoMint
+    );
+    transaction.feePayer = wallet.publicKey!;
+    let hash = await connection.getLatestBlockhash();
+    transaction.recentBlockhash = hash.blockhash;
 
-//    try {
-//       const trans = await setPayerAndBlockhashTransaction(
-//          [createProgramAccount, instruction]
-//       );
-//       const signature = await signAndSendTransaction(trans);
-//       const result = await connection.confirmTransaction(signature);
-//       console.log('end sendMessage', result);
-//    } catch (_) {}
-// }
+    const signature = await wallet.sendTransaction(transaction, connection, {
+        signers: [eventAccount, yesMintAccount, noMintAccount]
+    });
 
-//101
-// export async function resolveEvent(eventid: PublicKey) {
+    console.log('DONE!');
 
-// }
-
-
-
-// HELPER FUNCTIONS - should probably have their own file
-
-// async function checkWallet(): Promise<{ wallet: WalletContextState, connection: Connection }> {
-//    const { connection } = useConnection();
-//    const wallet = useWallet();
-
-//    if (!wallet!.connected) {
-//       await wallet!.connect();
-//    }
-//    return { wallet, connection };
-// }
-
-// async function setPayerAndBlockhashTransaction(instructions: TransactionInstruction[]) {
-//    const { connection, wallet } = await checkWallet();
-
-//    const transaction = new Transaction();
-//    instructions.forEach(ix => {
-//       transaction.add(ix);
-//    });
-//    transaction.feePayer = wallet.publicKey!;
-//    let hash = await connection.getRecentBlockhash();
-//    transaction.recentBlockhash = hash.blockhash;
-//    return transaction;
-// }
-
-// async function signAndSendTransaction(transaction: Transaction) {
-//    const { connection, wallet } = await checkWallet();
-
-//    try {
-//       console.log('start signAndSendTransaction');
-//       let signedTrans = await (wallet as any).signTransaction(transaction);
-//       console.log('signed transaction');
-//       let signature = await connection.sendRawTransaction(
-//          signedTrans.serialize()
-//       );
-//       console.log('end signAndSendTransaction');
-//       return signature;
-//    } catch (err) {
-//       console.log('signAndSendTransaction error', err);
-//       throw err;
-//    }
-// }
+    // TODO update event pubkey in database here
+    // will need to update EVENT class in models.ts
+}
 
