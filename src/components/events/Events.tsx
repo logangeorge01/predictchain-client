@@ -27,7 +27,7 @@ export function Events() {
 
                 {events.length ? <Grid container>
                     {events.length > 0 && events.map(e =>
-                        <Grid item lg={4} key={e.name}>
+                        <Grid item lg={4} key={e.id}>
                             <Card variant="outlined" style={{ margin: "40px", padding: "20px", borderRadius: '20px' }}>
                                 <CardContent>
                                     <div style={{ display: 'flex', flexDirection: 'row' }}>

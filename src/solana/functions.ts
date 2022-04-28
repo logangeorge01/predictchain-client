@@ -22,8 +22,10 @@ export async function createEvent(connection: Connection, wallet: WalletContextS
     const eventAccount = Keypair.generate();
     const yesMintAccount = Keypair.generate();
     const noMintAccount = Keypair.generate();
+    const [ mintAuthority, bumpSeed ] = await PublicKey.findProgramAddress([PROGRAMID.toBuffer()], PROGRAMID);
 
     const newEvent = new EventAccount({
+        bumpSeed,
         resolveAuthority: wallet.publicKey!.toBuffer(),
         yesMintAddress: yesMintAccount.publicKey.toBuffer(),
         noMintAddress: noMintAccount.publicKey.toBuffer(),
@@ -62,14 +64,14 @@ export async function createEvent(connection: Connection, wallet: WalletContextS
     const createYesMint = createInitializeMintInstruction(
         yesMintAccount.publicKey,
         9,
-        PROGRAMID,
+        mintAuthority,
         null
     );
 
     const createNoMint = createInitializeMintInstruction(
         noMintAccount.publicKey,
         9,
-        PROGRAMID,
+        mintAuthority,
         null
     );
 

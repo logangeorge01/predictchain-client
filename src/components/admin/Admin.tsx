@@ -81,7 +81,7 @@ export function Admin() {
                 'Content-Type': 'application/json',
                 'x-api-key': wallet.publicKey!.toString(),
             },
-            body: JSON.stringify({ eventPublicKey: eventPublicKey })
+            body: JSON.stringify({ eventPublicKey })
         }).then(res => {
             if (res.status === 200) {
                 return res.json();
