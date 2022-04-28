@@ -21,7 +21,7 @@ export function Events() {
         })))
     }, [])
     return (
-        <Paper style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%'}}>
+        <div style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%', backgroundColor: '#1e1e1e'}}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: '30px', width: '70%' }}>
                 <Button variant="contained" onClick={() => navigate('/newevent')}>Request New Event</Button>
 
@@ -53,6 +53,6 @@ export function Events() {
                     )}
                 </Grid> : <Typography style={{ marginTop: '80px' }} variant="h3" component="div">No Events</Typography>}
             </div>
-        </Paper>
+        </div>
     );
 }

@@ -109,7 +109,7 @@ export function Admin() {
     };
 
     return isAdmin ? (
-        <Paper style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%'}}>
+        <div style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%',backgroundColor: '#1e1e1e'}}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: '70%' }}>
             {events.length ? 
             <>
@@ -146,6 +146,6 @@ export function Admin() {
                 </Grid>
             </> : <Typography style={{marginTop: '80px'}} variant="h3" component="div">No Pending Events</Typography>}
         </div>
-        </Paper>
+        </div>
     ) : (<div></div>);
 }

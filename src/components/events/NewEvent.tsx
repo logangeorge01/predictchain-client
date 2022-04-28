@@ -61,7 +61,7 @@ export function NewEvent() {
     }
 
     return (
-        <Paper style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%'}}>
+        <div style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%',backgroundColor: '#1e1e1e'}}>
             <div className='newevent'>
                 <Typography style={{ marginTop: '30px', marginBottom: '20px' }} variant="h4" component="div">Request a New Event</Typography>
 
@@ -136,7 +136,7 @@ export function NewEvent() {
                         />
                     </div>
                     <div className='input'>
-                        <Stack spacing={1} direction="row" style={{ float: 'right' }}>
+                        <Stack spacing={1} direction="row" style={{ float: 'right', marginBottom: '40px'}}>
                             <Button className='formbutton'  variant='contained' onClick={onCancel}>Cancel</Button>
                             <Button className='formbutton'  variant='contained' onClick={onSubmit}>Submit</Button>
                         </Stack>
@@ -144,6 +144,6 @@ export function NewEvent() {
                 </Box>
 
             </div>
-        </Paper>
+        </div>
     );
 }
