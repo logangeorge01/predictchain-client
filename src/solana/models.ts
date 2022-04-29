@@ -38,12 +38,14 @@ export class Event {
 
 //this is what gets serialized to blockchain
 export class EventAccount {
+    bumpSeed: number;
     resolveAuthority: Uint8Array;
     yesMintAddress: Uint8Array;
     noMintAddress: Uint8Array;
     volume: BN;
 
     constructor(e: EventAccount) {
+        this.bumpSeed = e.bumpSeed;
         this.resolveAuthority = e.resolveAuthority;
         this.yesMintAddress = e.yesMintAddress;
         this.noMintAddress = e.noMintAddress;
@@ -54,6 +56,7 @@ export class EventAccount {
         [EventAccount, {
             kind: 'struct',
             fields: [
+                ['bumpSeed', 'u64'],
                 ['resolveAuthority', [32]],
                 ['yesMintAddress', [32]],
                 ['noMintAddress', [32]],
