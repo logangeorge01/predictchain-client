@@ -16,19 +16,19 @@ export function Events() {
         }).then(json => setEvents(((json && json.items ? json.items : []) as any[]).map(event => {
             return {
                 ...event,
-                resolutionDate: new Date(parseInt(event.resolutionDate)).toLocaleDateString()
+                resolutionDate: new Date(parseInt(event.resolutionDate)).toLocaleString()
             } as Event
         })))
     }, [])
     return (
-        <div style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%', backgroundColor: '#1e1e1e'}}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: '100%', backgroundColor: '#1e1e1e' }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: '30px', width: '70%' }}>
-                <Button variant="contained" onClick={() => navigate('/newevent')}>Request New Event</Button>
+                <Button variant="contained" style={{marginBottom: '10px'}} onClick={() => navigate('/newevent')}>Request New Event</Button>
 
                 {events.length ? <Grid container>
                     {events.length > 0 && events.map(e =>
                         <Grid item lg={4} key={e.name}>
-                            <Card variant="outlined" style={{ margin: "40px", padding: "20px", borderRadius: '20px' }}>
+                            <Card variant="outlined" style={{ margin: "10px", padding: "20px", borderRadius: '20px' }}>
                                 <CardContent>
                                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                                         <img src={e.imageLink} style={{ objectFit: 'cover', width: '35px', height: '35px', borderRadius: '100%', marginRight: '10px' }}></img>

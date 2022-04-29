@@ -3,8 +3,21 @@ import { useNavigate } from "react-router-dom";
 // import { getAllEvents } from "../../solana/functions";
 import { Event } from "../../solana/models";
 import { Button, Card, CardContent, Typography, Grid, TextField, Stack, Box, Paper } from '@mui/material';
+import * as web3 from "@solana/web3.js";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
-
+async function getOwnedTokens(): Promise<void> {
+    const wallet = useWallet();
+    const { connection } = useConnection();
+    if (!wallet.publicKey) return;
+    const PUBLIC_KEY = wallet.publicKey!.toString();
+    const splTokensBalance = await connection.getParsedTokenAccountsByOwner(
+        new web3.PublicKey(PUBLIC_KEY),
+        {
+            programId: new web3.PublicKey(process.env.REACT_APP_SOLANA_PROGRAM!),
+        });
+    console.log(splTokensBalance);
+}
 export function Portfolio() {
     const [events, setEvents] = useState<Event[]>([]);
     let navigate = useNavigate();
@@ -28,10 +41,10 @@ export function Portfolio() {
     }, [])
 
     return (
-        <div style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%',backgroundColor: '#1e1e1e'}}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: '100%', backgroundColor: '#1e1e1e' }}>
 
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: '30px', width: '70%', marginBottom: "40px" }}>
-            
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: '30px', width: '70%', marginBottom: "40px" }}>
+
                 <Typography variant="h3" mb={2}>
                     Portfolio
                 </Typography>
@@ -49,7 +62,7 @@ export function Portfolio() {
                                     </Stack>
                                     <Stack spacing={2} direction="row" style={{ float: 'right', marginBottom: "20px" }}>
                                         <Stack spacing={1} style={{ textAlign: "center" }}>
-                                            <Typography variant="body2" style={{fontWeight: 600}}>
+                                            <Typography variant="body2" style={{ fontWeight: 600 }}>
                                                 Position
                                             </Typography>
                                             <Typography variant="body2">
@@ -58,7 +71,7 @@ export function Portfolio() {
                                         </Stack>
 
                                         <Stack spacing={1} style={{ textAlign: "center" }}>
-                                            <Typography variant="body2" style={{fontWeight: 600}}>
+                                            <Typography variant="body2" style={{ fontWeight: 600 }}>
                                                 Resolution Date
                                             </Typography>
                                             <Typography variant="body2">
@@ -67,7 +80,7 @@ export function Portfolio() {
                                         </Stack>
                                         <div className='element'>
                                             <Stack spacing={1} style={{ textAlign: "center" }}>
-                                                <Typography variant="body2" style={{fontWeight: 600}}>
+                                                <Typography variant="body2" style={{ fontWeight: 600 }}>
                                                     Bought Price
                                                 </Typography>
                                                 <Typography variant="body2">
@@ -77,7 +90,7 @@ export function Portfolio() {
                                         </div>
                                         <div className='element'>
                                             <Stack spacing={1} style={{ textAlign: "center" }}>
-                                                <Typography variant="body2" style={{fontWeight: 600}}>
+                                                <Typography variant="body2" style={{ fontWeight: 600 }}>
                                                     Current Price
                                                 </Typography>
                                                 <Typography variant="body2">
@@ -87,7 +100,7 @@ export function Portfolio() {
                                         </div>
                                         <div className='element'>
                                             <Stack spacing={1} style={{ textAlign: "center" }}>
-                                                <Typography variant="body2" style={{fontWeight: 600}}>
+                                                <Typography variant="body2" style={{ fontWeight: 600 }}>
                                                     Tokens Owned
                                                 </Typography>
                                                 <Typography variant="body2">
@@ -97,7 +110,7 @@ export function Portfolio() {
                                         </div>
                                         <div className='element'>
                                             <Stack spacing={1} style={{ textAlign: "center" }}>
-                                                <Typography variant="body2" style={{fontWeight: 600}}>
+                                                <Typography variant="body2" style={{ fontWeight: 600 }}>
                                                     Profit/Loss
                                                 </Typography>
                                                 <Typography variant="body2">
@@ -126,8 +139,8 @@ export function Portfolio() {
                         </div>
                     )}
                 </Stack> : <Typography style={{ marginTop: '80px' }} variant="h3" component="div">No Events</Typography>}
-            
-        </div>
+
+            </div>
         </div>
 
     );

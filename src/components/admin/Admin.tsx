@@ -20,7 +20,7 @@ export function Admin() {
         if (!wallet.publicKey) {
             return;
         }
-        
+
         fetch(`${process.env.REACT_APP_API_URL}/is-admin`, {
             method: 'GET',
             headers: {
@@ -47,7 +47,7 @@ export function Admin() {
             navigate('/events');
             return;
         }
-            
+
         fetch(`${process.env.REACT_APP_API_URL}/pending-events`, {
             method: 'GET',
             headers: {
@@ -64,7 +64,7 @@ export function Admin() {
                 setEvents(((json && json.items ? json.items : []) as any[]).map(event => {
                     return {
                         ...event,
-                        resolutionDate: new Date(parseInt(event.resolutionDate)).toLocaleDateString()
+                        resolutionDate: new Date(parseInt(event.resolutionDate)).toLocaleString()
                     } as Event
                 }));
             }
@@ -109,43 +109,47 @@ export function Admin() {
     };
 
     return isAdmin ? (
-        <div style={{display: "flex", flexDirection: "column", alignItems: "center", width:'100%',backgroundColor: '#1e1e1e'}}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: '70%' }}>
-            {events.length ? 
-            <>
-                <Typography style={{marginTop: '30px', marginBottom: '20px'}} variant="h3" component="div">Pending Events</Typography>
-                <Grid container>
-                    {events.length > 0 && events.map(e =>
-                        <Grid item lg={4} key={e.name}>
-                            <Card variant="outlined" style={{ margin: "20px", padding: "20px", borderRadius: '20px' }}>
-                                <CardContent>
-                                    <div style={{display: 'flex', flexDirection: 'row'}}>
-                                        <img src={e.imageLink} style={{objectFit: 'cover', width: '35px', height: '35px', borderRadius: '100%', marginRight: '10px'}}></img>
-                                        <Typography variant="h5" component="div">
-                                            {e.name}
-                                        </Typography>
-                                    </div>
-                                    <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
-                                        {"category: " + e.category}
-                                    </Typography>
-                                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                        {"description: " + e.description}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        {"Resolves on " + e.resolutionDate}
-                                    </Typography>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: '100%', backgroundColor: '#1e1e1e' }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: '70%' }}>
+                {events.length ?
+                    <>
+                        <Typography style={{ marginTop: '30px', marginBottom: '20px' }} variant="h3" component="div">Pending Events</Typography>
+                        <Grid container>
+                            {events.length > 0 && events.map(e =>
+                                <Grid item lg={4} key={e.name}>
+                                    <Card variant="outlined" style={{ margin: "10px", padding: "20px", borderRadius: '20px' }}>
+                                        <CardContent>
+                                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                                <img src={e.imageLink} style={{ objectFit: 'cover', width: '35px', height: '35px', borderRadius: '100%', marginRight: '10px' }}></img>
+                                                <Typography variant="h5" component="div">
+                                                    {e.name}
+                                                </Typography>
+                                            </div>
 
-                                    <div style={{ marginTop: '20px' }}>
-                                        <Button variant="contained" onClick={() => approveEvent(e.id!)} style={{ margin: '5px' }}>Approve</Button>
-                                        <Button variant="contained" onClick={() => denyEvent(e.id!)} style={{ margin: '5px' }}>Deny</Button>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                                            <Typography sx={{ mb: 1.5, mt: 1.5 }} color="text.secondary">
+                                                {"category: " + e.category}
+                                            </Typography>
+                                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                                {"description: " + e.description}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                {"Resolves on: "}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                {e.resolutionDate}
+                                            </Typography>
+
+                                            <div style={{ marginTop: '20px' }}>
+                                                <Button variant="contained" onClick={() => approveEvent(e.id!)} style={{ margin: '5px 5px 0px 0px' }}>Approve</Button>
+                                                <Button variant="contained" onClick={() => denyEvent(e.id!)} style={{ margin: '5px 5px 0px 0px' }}>Deny</Button>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            )}
                         </Grid>
-                    )}
-                </Grid>
-            </> : <Typography style={{marginTop: '80px'}} variant="h3" component="div">No Pending Events</Typography>}
-        </div>
+                    </> : <Typography style={{ marginTop: '80px' }} variant="h3" component="div">No Pending Events</Typography>}
+            </div>
         </div>
     ) : (<div></div>);
 }
